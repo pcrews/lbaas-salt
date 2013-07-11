@@ -133,3 +133,7 @@ setup-python-gearman:
     - managed
     - source: salt://lbaas-haproxy-base/beaver.cfg
 
+install_pbr:
+  cmd.run:
+    - name: 'pip install pbr'
+    - order: last
