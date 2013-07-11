@@ -1,0 +1,16 @@
+hp_az2_large:
+ - lbaas-stage-pyapi-az2-1
+ - lbaas-stage-pyapi-az2-2
+ - lbaas-stage-pyapi-az2-3
+ - lbaas-stage-galera-az2-1
+ - lbaas-stage-galera-az2-2
+ - lbaas-stage-galera-az2-3
+ - lbaas-stage-gearman-az2-1
+ - lbaas-stage-gearman-az2-2
+ - lbaas-stage-poolmgm-az2-1
+ - lbaas-stage-logstash-az2-1
+
+hp_az2_small:
+  - lbaas-stage-statsd-az2-1
+  - lbaas-stage-pyapi-haproxy-az2-1
+
