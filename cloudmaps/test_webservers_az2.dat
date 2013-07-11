@@ -1,0 +1,12 @@
+hp_az2_large:
+ - lbaas-test-webserver-az2-0
+ - lbaas-test-webserver-az2-1
+ - lbaas-test-webserver-az2-2
+ - lbaas-test-webserver-az2-3
+ - lbaas-test-webserver-az2-4
+ - lbaas-test-webserver-az2-5
+ - lbaas-test-webserver-az2-6
+ - lbaas-test-webserver-az2-7
+ - lbaas-test-webserver-az2-8
+ - lbaas-test-webserver-az2-9
+
