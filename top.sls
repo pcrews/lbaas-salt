@@ -1,7 +1,8 @@
 stage:
+    '*':
+      - logging_common
     'lbaas-stage-pyapi-az*':
       - lbaas-pyapi
-      - logging_common
     'lbaas-stage*poolmgm*':
       - lbaas-poolmgm
     'lbaas-stage*gearman*':
