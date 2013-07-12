@@ -105,7 +105,6 @@ libra-git:
    git.latest:
     - cwd: /home/ubuntu
     - name: https://github.com/stackforge/libra.git
-    - rev: release-v2
     - target: /home/ubuntu/libra
     - force: True
     - order: 49
@@ -131,6 +130,7 @@ setup-python-gearman:
 /etc/beaver.cfg:
   file:
     - managed
+    - template: jinja
     - source: salt://lbaas-haproxy-base/beaver.cfg
 
 install_pbr:
