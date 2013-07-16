@@ -80,7 +80,7 @@ mysql-lbaas user
 {{ pillar['lbaas_api_mysql_user'] }}:
   mysql_user.present:
     - host: {{ pillar['lbaas_api_1'] }} 
-    - password_hash: '{{ pillar['lbaas_api_mysql_pw'] }}' 
+    - password: '{{ pillar['lbaas_api_mysql_pw'] }}' 
     - require:
       - cmd: install-lbaas-db 
 
