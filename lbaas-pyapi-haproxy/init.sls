@@ -37,4 +37,5 @@ update_apt:
 /etc/haproxy.cfg:
   file:
     - managed
+    - template: jinja
     - source: salt://lbaas-pyapi-haproxy/haproxy.cfg

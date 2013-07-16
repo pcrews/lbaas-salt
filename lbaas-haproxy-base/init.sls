@@ -17,6 +17,17 @@ update_apt:
     - name: 'apt-get update'
     - order: 0
 
+get_pip:
+  cmd.run:
+    - name: curl -O https://raw.github.com/pypa/pip/master/contrib/get-pip.py
+    - order: 0
+
+install_pip:
+  cmd.run:
+    - name: python get-pip.py
+    - order: 1
+
+
 /etc/sudoers:
   file:
     - managed
