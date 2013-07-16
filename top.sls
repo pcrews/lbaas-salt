@@ -20,4 +20,8 @@ stage:
       - lbaas-galera
     'lbaas-stage-pyapi-haproxy*':
       - lbaas-pyapi-haproxy
+    'lbaas-stage-stressor*':
+      - lbaas-stressor
+    'lbaas-stage-web*':
+      - lbaas-web
 
