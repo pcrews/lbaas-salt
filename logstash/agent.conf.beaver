@@ -1,0 +1,105 @@
+input {
+  # Read from the redis list
+  redis {
+    host => "{{ pillar['lbaas_logstash_local_redis_host'] }}"
+    data_type => "list"
+    key => "{{ pillar['lbaas_logstash_local_redis_key'] }}"
+    type => "{{ pillar['lbaas_logstash_local_redis_type'] }}"
+    threads => 2
+    port => {{ pillar['lbaas_logstash_listen_port'] }} 
+    debug => true
+  }
+}
+
+# Add tags for the hostname and client type. By turning the client_type
+# field into a tag, we can use it to apply filters for different log
+# styles. Clients should manually set client type. For example:
+#      lumberjack.sh --field client_type=lbaas_worker
+filter {
+  mutate {
+    add_tag => [ "%{@source_host}" ]
+  }
+}
+
+# Grok and date filters to help us get the log timestamp
+# and to use that as the logstash timestamp
+filter {
+  
+  #Galera logs may have multiline.
+  multiline {
+    type => "lbaas"
+    tags => "libra_galera"
+    pattern => "^\d{6}"
+    negate => true
+    what => "previous"
+  }
+
+  #Worker logs may have multiline.
+  multiline {
+    type => "lbaas"
+    tags => "libra_worker"
+    pattern => "^\s|^}$"
+    what => "previous"
+  }
+
+  # Non-Galera filters first
+  grok {
+    type => "lbaas"
+    exclude_tags => "libra_galera"
+    pattern => [ "%{DATESTAMP:log_timestamp}:? %{WORD:message_body}" ]
+  }
+
+  # For Galera, pull out the timestamp (like, "120707  0:40:34")
+  grok {
+    type => "lbaas"
+    tags => "libra_galera"
+    pattern => [ "^%{NUMBER:g_date} *%{NOTSPACE:g_time} *%{GREEDYDATA: message_body}" ]
+  }
+
+  # For Galera, put the timestamp into a single field
+  mutate {
+    type => "lbaas"
+    tags => "libra_galera"
+    replace => [ "log_timestamp", "%{g_date} %{g_time}" ]
+  }
+
+  # For Galera, remove unused tags
+  mutate {
+    type => "lbaas"
+    tags => "libra_galera"
+    remove => [ "g_date, g_time" ]
+  }
+
+  # Apply a date filter
+  date {
+    type => "lbaas"
+    match => [ "log_timestamp", "YYYY-MM-dd HH:mm:ss,SSS", "YYMMdd H:mm:ss", "YYMMdd HH:mm:ss" ]
+  }
+
+  # Remove remaining unwanted tags
+  mutate {
+    type => "lbaas"
+    remove => [ "log_timestamp", "message_body", "_grokparsefailure" ]
+  }
+
+}
+
+output {
+#  stdout {
+#    debug => true
+#  }
+
+  file {
+    path => "/var/log/logstash_output.dat"
+  }
+
+  redis {
+    host => "127.0.0.1"
+    port => "{{ pillar['lbaas_logstash_redis_port'] }}"
+    password => "{{ pillar['lbaas_logstash_redis_pw'] }}"
+    data_type => "list"
+    key => "{{ pillar['lbaas_logstash_redis_key'] }}"
+  }
+}
+
+

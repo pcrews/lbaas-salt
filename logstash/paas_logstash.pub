@@ -1,0 +1,1 @@
+{{ pillar['lbaas_paas_logstash_pub'] }}
