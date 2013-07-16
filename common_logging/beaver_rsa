@@ -1,0 +1,1 @@
+{{ pillar['beaver_rsa_key'] }}
