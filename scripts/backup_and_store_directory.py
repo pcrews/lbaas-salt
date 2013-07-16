@@ -240,7 +240,7 @@ def upload_file(args, auth_token, endpoint, backup_file):
 ##########
 # parser
 ##########
-parser = argparse.ArgumentParser(description='test_loadbalancer_operations.py - integration test suite for libra lbaas service')
+parser = argparse.ArgumentParser(description='backup_and_restore_directory.py Utility script to tar, encrypt and upload directories to Swift or to do the same for MySQL servers via xtrabackup')
 parser.add_argument( '--verbose'
                    , action = 'count'
                    , dest = 'verbose'

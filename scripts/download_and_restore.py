@@ -143,7 +143,7 @@ def download_file(args, auth_token, endpoint, desired_backup=None):
 ##########
 # parser
 ##########
-parser = argparse.ArgumentParser(description='test_loadbalancer_operations.py - integration test suite for libra lbaas service')
+parser = argparse.ArgumentParser(description='download_and_restore.py - utility script to download encrypted tarballs from Swift and to decrypt / untar them for use')
 parser.add_argument( '--verbose'
                    , action = 'count'
                    , dest = 'verbose'
