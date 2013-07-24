@@ -16,4 +16,5 @@
 # Missing examples for memcache persitent queue store...
 
 # Parameters to pass to gearmand.
-PARAMS="--listen=0.0.0.0"
+PARAMS="--listen=0.0.0.0 --verbose=DEBUG --ssl"
+

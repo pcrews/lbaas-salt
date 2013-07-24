@@ -12,29 +12,111 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-required_packages:
-  pkg.installed:
-    - pkgs:
-      - gearman-job-server 
-      - gearman-tools 
-    - order: 1
+
+ssl_pkg_cyassl:
+   file.managed:
+     - name: /home/ubuntu/cyassl_2.7.0-1_amd64.deb
+     - source: salt://debian-packages/cyassl_2.7.0-1_amd64.deb
+   cmd.run:
+     - name: dpkg -i cyassl_2.7.0-1_amd64.deb
+     - cwd: /home/ubuntu
+     - require:
+       - file: /home/ubuntu/cyassl_2.7.0-1_amd64.deb
+     - order: 1
+
+ssl_pkg_libgearman:
+   file.managed:
+     - name: /home/ubuntu/libgearman8_1.2~20130722-1_amd64.deb
+     - source: salt://debian-packages/libgearman8_1.2~20130722-1_amd64.deb
+   cmd.run:
+     - name: dpkg -i libgearman8_1.2~20130722-1_amd64.deb
+     - cwd: /home/ubuntu
+     - require:
+       - file: /home/ubuntu/libgearman8_1.2~20130722-1_amd64.deb
+     - order: 2
+
+ssl_pkg_gearman_job_server:
+   file.managed:
+     - name: /home/ubuntu/gearman-job-server_1.2~20130722-1_amd64.deb
+     - source: salt://debian-packages/gearman-job-server_1.2~20130722-1_amd64.deb
+   cmd.run:
+     - name: dpkg -i gearman-job-server_1.2~20130722-1_amd64.deb
+     - cwd: /home/ubuntu
+     - require:
+       - file: /home/ubuntu/gearman-job-server_1.2~20130722-1_amd64.deb
+     - order: 3
+
+ssl_gearman_tools:
+   file.managed:
+     - name: /home/ubuntu/gearman-tools_1.2~20130722-1_amd64.deb
+     - source: salt://debian-packages/gearman-tools_1.2~20130722-1_amd64.deb
+   cmd.run:
+     - name: dpkg -i gearman-tools_1.2~20130722-1_amd64.deb
+     - cwd: /home/ubuntu
+     - require:
+       - file: /home/ubuntu/gearman-tools_1.2~20130722-1_amd64.deb
+     - order: 4
+
+fix_packaging:
+  cmd.run:
+    - name: apt-get -f -y install
+    - order: 5
 
 /etc/default/gearman-job-server:
   file:
     - managed
     - source: salt://lbaas-gearman/gearman-job-server
-    - order: 2
+    - order: 6 
 
 stop_gearman:
   cmd.run:
     - name: 'service gearman-job-server stop'
-    - order: 5
+    - order: 7 
 
 start_gearman:
   cmd.run:
     - name: 'service gearman-job-server start '
     - order: last 
 
+/etc/beaver.cfg:
+  file:
+    - managed
+    - template: jinja
+    - source: salt://lbaas-gearman/beaver.cfg
+    - order: 6
 
+/etc/ssl/certs/gearmand-ca.pem:
+  file:
+    - managed
+    - template: jinja
+    - source: salt://lbaas-gearman/gearmand-ca.pem
+    - order: 6
 
-    
+/etc/ssl/certs/gearmand.key:
+  file:
+    - managed
+    - template: jinja
+    - source: salt://lbaas-gearman/gearmand.key
+    - order: 6
+
+/etc/ssl/certs/gearmand.pem:
+  file:
+    - managed
+    - template: jinja
+    - source: salt://lbaas-gearman/gearmand.pem
+    - order: 6
+
+/etc/ssl/certs/gearman.key:
+  file:
+    - managed
+    - template: jinja
+    - source: salt://lbaas-gearman/gearman.key
+    - order: 6
+
+/etc/ssl/certs/gearman.pem:
+  file:
+    - managed
+    - template: jinja
+    - source: salt://lbaas-gearman/gearman.pem
+    - order: 6
+

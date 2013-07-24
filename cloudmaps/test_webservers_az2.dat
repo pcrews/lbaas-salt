@@ -12,7 +12,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-hp_az2_large:
+#hp_az2_large:
+hp_az2_medium:
  - lbaas-test-webserver-az2-0
  - lbaas-test-webserver-az2-1
  - lbaas-test-webserver-az2-2

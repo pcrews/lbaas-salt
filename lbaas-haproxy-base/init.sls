@@ -113,16 +113,16 @@ create_libra_log:
     - source: salt://lbaas-haproxy-base/libra_worker.conf
     - order: 8 
 
-python-gearman-git:
-   require:
-     - pkg: git
-   git.latest:
-    - cwd: /home/ubuntu
-    - name: https://github.com/Yelp/python-gearman.git
-    - rev: worker-coaxing
-    - target: /home/ubuntu/python-gearman
-    - force: True
-    - order: 48
+#python-gearman-git:
+#   require:
+#     - pkg: git
+#   git.latest:
+#    - cwd: /home/ubuntu
+#    - name: https://github.com/Yelp/python-gearman.git
+#    - rev: worker-coaxing
+#    - target: /home/ubuntu/python-gearman
+#    - force: True
+#    - order: 48
 
 libra-git:
    require:
@@ -143,14 +143,33 @@ setup-libra-worker:
     - cwd: /home/ubuntu/libra
     - order: 50 
 
-setup-python-gearman:
-  require:
-    - pkg: git
-    - pkg: python-setuptools
+/home/ubuntu/gearman-2.0.2.tar.gz"
+  file:
+    - managed
+    - source: salt://lbaas-haproxy-base/gearman-2.0.2.tar.gz
+    - order: 40
+
+untar_pygearman:
   cmd.run:
-    - name: 'sudo python setup.py install'
-    - cwd: /home/ubuntu/python-gearman
-    - order: 51
+    - name:  tar -xzf gearman-2.0.2.tar.gz
+    - cwd: /home/ubuntu
+    - order: 41
+
+install_pygearman:
+  cmd.run:
+    -name: python setup.py install
+    - cwd: /home/ubuntu/gearman-2.0.2
+    - order: 42
+  
+
+#setup-python-gearman:
+#  require:
+#    - pkg: git
+#    - pkg: python-setuptools
+#  cmd.run:
+#    - name: 'sudo python setup.py install'
+#    - cwd: /home/ubuntu/python-gearman
+#    - order: 51
 
 /etc/beaver.cfg:
   file:
