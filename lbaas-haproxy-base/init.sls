@@ -143,7 +143,7 @@ setup-libra-worker:
     - cwd: /home/ubuntu/libra
     - order: 50 
 
-/home/ubuntu/gearman-2.0.2.tar.gz"
+/home/ubuntu/gearman-2.0.2.tar.gz:
   file:
     - managed
     - source: salt://lbaas-haproxy-base/gearman-2.0.2.tar.gz
