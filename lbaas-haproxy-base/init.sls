@@ -157,7 +157,7 @@ untar_pygearman:
 
 install_pygearman:
   cmd.run:
-    -name: python setup.py install
+    - name: python setup.py install
     - cwd: /home/ubuntu/gearman-2.0.2
     - order: 42
   
