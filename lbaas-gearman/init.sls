@@ -26,41 +26,46 @@ ssl_pkg_cyassl:
 
 ssl_pkg_libgearman:
    file.managed:
-     - name: /home/ubuntu/libgearman8_1.2~20130722-1_amd64.deb
-     - source: salt://debian-packages/libgearman8_1.2~20130722-1_amd64.deb
+     - name: /home/ubuntu/libgearman8_1.2~20130725-1_amd64.deb
+     - source: salt://debian-packages/libgearman8_1.2~20130725-1_amd64.deb
    cmd.run:
-     - name: dpkg -i libgearman8_1.2~20130722-1_amd64.deb
+     - name: dpkg -i libgearman8_1.2~20130725-1_amd64.deb
      - cwd: /home/ubuntu
      - require:
-       - file: /home/ubuntu/libgearman8_1.2~20130722-1_amd64.deb
+       - file: /home/ubuntu/libgearman8_1.2~20130725-1_amd64.deb
      - order: 2
 
 ssl_pkg_gearman_job_server:
    file.managed:
-     - name: /home/ubuntu/gearman-job-server_1.2~20130722-1_amd64.deb
-     - source: salt://debian-packages/gearman-job-server_1.2~20130722-1_amd64.deb
+     - name: /home/ubuntu/gearman-job-server_1.2~20130725-1_amd64.deb
+     - source: salt://debian-packages/gearman-job-server_1.2~20130725-1_amd64.deb
    cmd.run:
-     - name: dpkg -i gearman-job-server_1.2~20130722-1_amd64.deb
+     - name: dpkg -i gearman-job-server_1.2~20130725-1_amd64.deb
      - cwd: /home/ubuntu
      - require:
-       - file: /home/ubuntu/gearman-job-server_1.2~20130722-1_amd64.deb
+       - file: /home/ubuntu/gearman-job-server_1.2~20130725-1_amd64.deb
      - order: 3
 
 ssl_gearman_tools:
    file.managed:
-     - name: /home/ubuntu/gearman-tools_1.2~20130722-1_amd64.deb
-     - source: salt://debian-packages/gearman-tools_1.2~20130722-1_amd64.deb
+     - name: /home/ubuntu/gearman-tools_1.2~20130725-1_amd64.deb
+     - source: salt://debian-packages/gearman-tools_1.2~20130725-1_amd64.deb
    cmd.run:
-     - name: dpkg -i gearman-tools_1.2~20130722-1_amd64.deb
+     - name: dpkg -i gearman-tools_1.2~20130725-1_amd64.deb
      - cwd: /home/ubuntu
      - require:
-       - file: /home/ubuntu/gearman-tools_1.2~20130722-1_amd64.deb
+       - file: /home/ubuntu/gearman-tools_1.2~20130725-1_amd64.deb
      - order: 4
+
+update_apt:
+  cmd.run:
+    - name: apt-get update
+    - order: 5
 
 fix_packaging:
   cmd.run:
     - name: apt-get -f -y install
-    - order: 5
+    - order: 6 
 
 /etc/default/gearman-job-server:
   file:
@@ -89,34 +94,39 @@ start_gearman:
   file:
     - managed
     - template: jinja
-    - source: salt://lbaas-gearman/gearmand-ca.pem
+    - mode: 644
+    - source: salt://debian-packages/gearmand-ca.pem
     - order: 6
 
 /etc/ssl/certs/gearmand.key:
   file:
     - managed
     - template: jinja
-    - source: salt://lbaas-gearman/gearmand.key
+    - mode: 644
+    - source: salt://debian-packages/gearmand.key
     - order: 6
 
 /etc/ssl/certs/gearmand.pem:
   file:
     - managed
     - template: jinja
-    - source: salt://lbaas-gearman/gearmand.pem
+    - mode: 600
+    - source: salt://debian-packages/gearmand.pem
     - order: 6
 
 /etc/ssl/certs/gearman.key:
   file:
     - managed
     - template: jinja
-    - source: salt://lbaas-gearman/gearman.key
+    - mode: 644
+    - source: salt://debian-packages/gearman.key
     - order: 6
 
 /etc/ssl/certs/gearman.pem:
   file:
     - managed
     - template: jinja
-    - source: salt://lbaas-gearman/gearman.pem
+    - mode: 600
+    - source: salt://debian-packages/gearman.pem
     - order: 6
 

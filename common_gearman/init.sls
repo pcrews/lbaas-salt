@@ -2,20 +2,24 @@
   file:
     - managed
     - template: jinja
-    - source: salt://lbaas-gearman/gearmand-ca.pem
+    - mode: 644 
+    - source: salt://debian-packages/gearmand-ca.pem
     - order: 6
 
 /etc/ssl/gearman.key:
   file:
     - managed
     - template: jinja
-    - source: salt://lbaas-gearman/gearman.key
+    - mode: 644
+    - source: salt://debian-packages/gearman.key
     - order: 6
 
 /etc/ssl/gearman.pem:
   file:
     - managed
     - template: jinja
-    - source: salt://lbaas-gearman/gearman.pem
+    - mode: 600
+    - source: salt://debian-packages/gearman.pem
     - order: 6
+
 
