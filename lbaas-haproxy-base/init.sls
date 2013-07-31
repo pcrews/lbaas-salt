@@ -179,5 +179,5 @@ install_pygearman:
 
 install_pbr:
   cmd.run:
-    - name: 'pip install pbr'
+    - name: 'pip install pbr d2to1'
     - order: last

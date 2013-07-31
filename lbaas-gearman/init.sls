@@ -95,6 +95,8 @@ start_gearman:
     - managed
     - template: jinja
     - mode: 644
+    - owner: gearman
+    - group: gearman
     - source: salt://debian-packages/gearmand-ca.pem
     - order: 6
 
@@ -102,7 +104,9 @@ start_gearman:
   file:
     - managed
     - template: jinja
-    - mode: 644
+    - mode: 600
+    - owner: gearman
+    - group: gearman
     - source: salt://debian-packages/gearmand.key
     - order: 6
 
@@ -110,7 +114,9 @@ start_gearman:
   file:
     - managed
     - template: jinja
-    - mode: 600
+    - mode: 644
+    - owner: gearman
+    - group: gearman
     - source: salt://debian-packages/gearmand.pem
     - order: 6
 
@@ -118,7 +124,9 @@ start_gearman:
   file:
     - managed
     - template: jinja
-    - mode: 644
+    - mode: 600
+    - owner: ubuntu
+    - group: ubuntu
     - source: salt://debian-packages/gearman.key
     - order: 6
 
@@ -126,7 +134,9 @@ start_gearman:
   file:
     - managed
     - template: jinja
-    - mode: 600
+    - mode: 644
+    - owner: ubuntu
+    - group: ubuntu
     - source: salt://debian-packages/gearman.pem
     - order: 6
 

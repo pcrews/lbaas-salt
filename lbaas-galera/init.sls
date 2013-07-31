@@ -59,19 +59,17 @@ mysql-minion:
        mysql.db: 'mysql'
   - order: 200
 
-mysql-lbaas user
 {{ pillar['lbaas_api_mysql_user'] }}:
   mysql_user.present:
     - host: {{ pillar['lbaas_api_1'] }} 
     - password: '{{ pillar['lbaas_api_mysql_pw'] }}' 
-    - require:
-      - cmd: install-lbaas-db 
+    - order: 900
 
 {{ pillar['lbaas_galera_rpl_user'] }}:
   mysql_user.present:
     - host: localhost
     - password: {{ pillar['lbaas_galera_rpl_pw'] }}
-    - order: last
+    - order: 1000 
 
 galera_user_grants:
   mysql_grants.present:
@@ -79,11 +77,29 @@ galera_user_grants:
     - database: '*.*'
     - user: {{ pillar['lbaas_galera_rpl_user'] }}
     - host: localhost
+    - order: 1001
 
 /etc/beaver.cfg:
   file:
     - managed
     - template: jinja
     - source: salt://lbaas-galera/beaver.cfg
+
+/etc/ssl/galera-key.pem:
+  file:
+    - managed
+    - mode: 600
+    - owner: mysql
+    - group: mysql
+    - source: salt://debian-packages/galera-key.pem
+
+/etc/ssl/galera-cert.pem:
+  file:
+    - managed
+    - mode: 600
+    - owner: mysql
+    - group: mysql
+    - source: salt://debian-packages/galera-cert.pem
+
 
 

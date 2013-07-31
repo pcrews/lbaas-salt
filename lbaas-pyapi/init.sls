@@ -104,16 +104,16 @@ create_admin_api_log:
     - source: salt://lbaas-pyapi/libra.cfg
     - order: 7
 
-python-gearman-git:
-   require:
-     - pkg: git
-   git.latest:
-    - cwd: /home/ubuntu
-    - name: https://github.com/Yelp/python-gearman.git
-    - rev: worker-coaxing
-    - target: /home/ubuntu/python-gearman
-    - force: True
-    - order: 48
+#python-gearman-git:
+#   require:
+#     - pkg: git
+#   git.latest:
+#    - cwd: /home/ubuntu
+#    - name: https://github.com/Yelp/python-gearman.git
+#    - rev: worker-coaxing
+#    - target: /home/ubuntu/python-gearman
+#    - force: True
+#    - order: 48
 
 libra-git:
    require:
@@ -122,6 +122,7 @@ libra-git:
     - cwd: /home/ubuntu
     - name: https://github.com/stackforge/libra.git
     - target: /home/ubuntu/libra
+    - rev: eef66c4128ebdbe8a4815d2f09af6c0af4a36b72 
     - force: True
     - order: 49
 
@@ -134,14 +135,14 @@ setup-libra:
     - cwd: /home/ubuntu/libra
     - order: last 
 
-setup-python-gearman:
-  require:
-    - pkg: git
-    - pkg: python-setuptools
-  cmd.run:
-    - name: 'sudo python setup.py install'
-    - cwd: /home/ubuntu/python-gearman
-    - order: last 
+#setup-python-gearman:
+#  require:
+#    - pkg: git
+#    - pkg: python-setuptools
+#  cmd.run:
+#    - name: 'sudo python setup.py install'
+#    - cwd: /home/ubuntu/python-gearman
+#    - order: last 
 
 {{ pillar['lbaas_api_keystone_ca_certs_path'] }}:
   file:
@@ -172,4 +173,23 @@ setup-python-gearman:
     - managed
     - template: jinja
     - source: salt://lbaas-pyapi/beaver.cfg
+
+/home/ubuntu/gearman-2.0.2.tar.gz:
+  file:
+    - managed
+    - source: salt://lbaas-haproxy-base/gearman-2.0.2.tar.gz
+    - order: 40
+
+untar_pygearman:
+  cmd.run:
+    - name:  tar -xzf gearman-2.0.2.tar.gz
+    - cwd: /home/ubuntu
+    - order: 41
+
+install_pygearman:
+  cmd.run:
+    - name: python setup.py install
+    - cwd: /home/ubuntu/gearman-2.0.2
+    - order: 42
+  
 

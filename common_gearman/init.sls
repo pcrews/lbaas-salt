@@ -3,6 +3,13 @@
     - managed
     - template: jinja
     - mode: 644 
+    {% if 'pyapi' in grains['fqdn'] %}
+    - owner: libra
+    - group: libra
+    {% elif 'haproxy' in grains['fqdn'] %}
+    - owner: haproxy
+    - group: haproxy
+    {% endif %}
     - source: salt://debian-packages/gearmand-ca.pem
     - order: 6
 
@@ -10,7 +17,14 @@
   file:
     - managed
     - template: jinja
-    - mode: 644
+    - mode: 600
+    {% if 'pyapi' in grains['fqdn'] %}
+    - owner: libra
+    - group: libra
+    {% elif 'haproxy' in grains['fqdn'] %}
+    - owner: haproxy
+    - group: haproxy
+    {% endif %}
     - source: salt://debian-packages/gearman.key
     - order: 6
 
@@ -18,7 +32,14 @@
   file:
     - managed
     - template: jinja
-    - mode: 600
+    - mode: 644
+    {% if 'pyapi' in grains['fqdn'] %}
+    - owner: libra
+    - group: libra
+    {% elif 'haproxy' in grains['fqdn'] %}
+    - owner: haproxy
+    - group: haproxy
+    {% endif %}
     - source: salt://debian-packages/gearman.pem
     - order: 6
 
