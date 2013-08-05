@@ -85,7 +85,7 @@ galera_user_grants:
     - template: jinja
     - source: salt://lbaas-galera/beaver.cfg
 
-/etc/ssl/galera-key.pem:
+/etc/mysql/galera-key.pem:
   file:
     - managed
     - mode: 600
@@ -93,7 +93,7 @@ galera_user_grants:
     - group: mysql
     - source: salt://debian-packages/galera-key.pem
 
-/etc/ssl/galera-cert.pem:
+/etc/mysql/galera-cert.pem:
   file:
     - managed
     - mode: 600
