@@ -4,8 +4,8 @@
     - template: jinja
     - mode: 644 
     {% if 'pyapi' in grains['fqdn'] %}
-    - owner: libra
-    - group: libra
+    - owner: root 
+    - group: root 
     {% elif 'haproxy' in grains['fqdn'] %}
     - owner: haproxy
     - group: haproxy
@@ -19,8 +19,8 @@
     - template: jinja
     - mode: 600
     {% if 'pyapi' in grains['fqdn'] %}
-    - owner: libra
-    - group: libra
+    - owner: root 
+    - group: root 
     {% elif 'haproxy' in grains['fqdn'] %}
     - owner: haproxy
     - group: haproxy
@@ -34,8 +34,8 @@
     - template: jinja
     - mode: 644
     {% if 'pyapi' in grains['fqdn'] %}
-    - owner: libra
-    - group: libra
+    - owner: root
+    - group: root 
     {% elif 'haproxy' in grains['fqdn'] %}
     - owner: haproxy
     - group: haproxy

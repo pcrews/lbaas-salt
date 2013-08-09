@@ -122,7 +122,7 @@ libra-git:
     - cwd: /home/ubuntu
     - name: https://github.com/stackforge/libra.git
     - target: /home/ubuntu/libra
-    - rev: eef66c4128ebdbe8a4815d2f09af6c0af4a36b72 
+    #- rev: eef66c4128ebdbe8a4815d2f09af6c0af4a36b72 
     - force: True
     - order: 49
 

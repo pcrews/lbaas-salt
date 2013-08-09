@@ -26,35 +26,35 @@ ssl_pkg_cyassl:
 
 ssl_pkg_libgearman:
    file.managed:
-     - name: /home/ubuntu/libgearman8_1.2~20130725-1_amd64.deb
+     - name: /home/ubuntu/libgearman8_1.1.9~20130802-1_amd64.deb
      - source: salt://debian-packages/libgearman8_1.2~20130725-1_amd64.deb
    cmd.run:
-     - name: dpkg -i libgearman8_1.2~20130725-1_amd64.deb
+     - name: dpkg -i libgearman8_1.1.1.9~20130802-1_amd64.deb
      - cwd: /home/ubuntu
      - require:
-       - file: /home/ubuntu/libgearman8_1.2~20130725-1_amd64.deb
+       - file: /home/ubuntu/libgearman8_1.1.9~20130802-1_amd64.deb
      - order: 2
 
 ssl_pkg_gearman_job_server:
    file.managed:
-     - name: /home/ubuntu/gearman-job-server_1.2~20130725-1_amd64.deb
-     - source: salt://debian-packages/gearman-job-server_1.2~20130725-1_amd64.deb
+     - name: /home/ubuntu/gearman-job-server_1.1.9~20130802-1_amd64.deb
+     - source: salt://debian-packages/gearman-job-server_1.1.9~20130802-1_amd64.deb
    cmd.run:
-     - name: dpkg -i gearman-job-server_1.2~20130725-1_amd64.deb
+     - name: dpkg -i gearman-job-server_1.1.9~20130802-1_amd64.deb
      - cwd: /home/ubuntu
      - require:
-       - file: /home/ubuntu/gearman-job-server_1.2~20130725-1_amd64.deb
+       - file: /home/ubuntu/gearman-job-server_1.1.9~20130802-1_amd64.deb
      - order: 3
 
 ssl_gearman_tools:
    file.managed:
-     - name: /home/ubuntu/gearman-tools_1.2~20130725-1_amd64.deb
-     - source: salt://debian-packages/gearman-tools_1.2~20130725-1_amd64.deb
+     - name: /home/ubuntu/gearman-tools_1.1.9~20130802-1_amd64.deb
+     - source: salt://debian-packages/gearman-tools_1.1.9~20130802-1_amd64.deb
    cmd.run:
-     - name: dpkg -i gearman-tools_1.2~20130725-1_amd64.deb
+     - name: dpkg -i gearman-tools_1.1.9~20130802-1_amd64.deb
      - cwd: /home/ubuntu
      - require:
-       - file: /home/ubuntu/gearman-tools_1.2~20130725-1_amd64.deb
+       - file: /home/ubuntu/gearman-tools_1.1.9~20130802-1_amd64.deb
      - order: 4
 
 update_apt:

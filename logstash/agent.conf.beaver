@@ -6,9 +6,38 @@ input {
     key => "{{ pillar['lbaas_logstash_local_redis_key'] }}"
     type => "{{ pillar['lbaas_logstash_local_redis_type'] }}"
     threads => 2
-    port => {{ pillar['lbaas_logstash_listen_port'] }} 
+    port => {{ pillar['lbaas_logstash_listen_port'] }}
     debug => true
   }
+
+  file {
+    type => "lbaas"
+    path => ["/var/log/unattended-upgrades/unattended-upgrades.log"]
+    tags => "security_update"
+    debug => true
+  }
+
+  file {
+    type => "lbaas"
+    path => ["/var/log/salt/minion"]
+    tags => "salt_minion"
+    debug => true
+  }
+  
+  file {
+    type => "lbaas"
+    path => ["/var/log/auth.log"]
+    tags => "auth_log"
+    debug => true
+  }
+
+  file {
+    type => "lbaas"
+    path => ["/var/log/logstash/agent.log"]
+    tags => "logstash_log"
+    debug => true
+  }
+
 }
 
 # Add tags for the hostname and client type. By turning the client_type
@@ -34,26 +63,41 @@ filter {
     what => "previous"
   }
 
-  #Worker logs may have multiline.
+  # Salt minion filter
   multiline {
     type => "lbaas"
-    tags => "libra_worker"
-    pattern => "^\s|^}$"
+    tags => "salt_minion"
+    pattern => "^\d{4}"
+    negate => true
     what => "previous"
   }
 
   # Non-Galera filters first
   grok {
     type => "lbaas"
-    exclude_tags => "libra_galera"
+    exclude_tags => [ "libra_galera", "salt_minion", "auth_log" ]
     pattern => [ "%{DATESTAMP:log_timestamp}:? %{WORD:message_body}" ]
   }
 
-  # For Galera, pull out the timestamp (like, "120707  0:40:34")
+  # Salt minions - ex: 2013-07-17 19:35:30,017 [salt.loaded.int.module.cmdmod][ERROR   ] Command.. 
+  grok {
+    type => "lbaas"
+    tags => "salt_minion"
+    pattern => [ "%{DATESTAMP:log_timestamp} \[*%{GREEDYDATA: message_body}" ]
+  }
+
+  # Galera - ex: 130722 13:21:27 [Note] WSREP: Provider resumed.
   grok {
     type => "lbaas"
     tags => "libra_galera"
     pattern => [ "^%{NUMBER:g_date} *%{NOTSPACE:g_time} *%{GREEDYDATA: message_body}" ]
+  }
+
+  # Auth logs - ex: Jul 22 13:27:12 lbaas-stage-logstash-az2-1 sshd[2931].........
+  grok {
+    type => "lbaas"
+    tags => "auth_log"
+    pattern => [ "^%{SYSLOGTIMESTAMP:log_timestamp} *%{GREEDYDATA: message_body}" ]
   }
 
   # For Galera, put the timestamp into a single field
@@ -73,7 +117,7 @@ filter {
   # Apply a date filter
   date {
     type => "lbaas"
-    match => [ "log_timestamp", "YYYY-MM-dd HH:mm:ss,SSS", "YYMMdd H:mm:ss", "YYMMdd HH:mm:ss" ]
+    match => [ "log_timestamp", "YYYY-MM-dd HH:mm:ss,SSS", "YYMMdd H:mm:ss", "YYMMdd HH:mm:ss", "MMM dd HH:mm:ss", "MMM  d HH:mm:ss"]
   }
 
   # Remove remaining unwanted tags
@@ -89,9 +133,9 @@ output {
 #    debug => true
 #  }
 
-  file {
-    path => "/var/log/logstash_output.dat"
-  }
+#  file {
+#    path => "/var/log/logstash_output.dat"
+#  }
 
   redis {
     host => "127.0.0.1"
@@ -101,5 +145,4 @@ output {
     key => "{{ pillar['lbaas_logstash_redis_key'] }}"
   }
 }
-
 
