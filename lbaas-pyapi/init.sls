@@ -192,4 +192,28 @@ install_pygearman:
     - cwd: /home/ubuntu/gearman-2.0.2
     - order: 42
   
+/etc/ssl/galera-ca-cert.pem:
+  file:
+    - managed
+    - mode: 600
+    - source: salt://debian-packages/galera-ca-cert.pem
+    - owner: root
+    - group: root
+   
+/etc/ssl/galera-client-cert.pem:
+  file:
+    - managed
+    - mode: 600
+    - source: salt://debian-packages/galera-client-cert.pem
+    - owner: root
+    - group: root
 
+
+/etc/ssl/galera-client-key.pem:
+  file:
+    - managed
+    - mode: 600
+    - source: salt://debian-packages/galera-client-key.pem
+    - owner: root
+    - group: root
+ 

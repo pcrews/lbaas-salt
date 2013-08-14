@@ -101,5 +101,28 @@ galera_user_grants:
     - group: mysql
     - source: salt://debian-packages/galera-cert.pem
 
+/etc/mysql/galera-ca-cert.pem:
+  file:
+    - managed
+    - mode: 600
+    - owner: mysql
+    - group: mysql
+    - source: salt://debian-packages/galera-ca-cert.pem
+
+/etc/mysql/galera-server-cert.pem:
+  file:
+    - managed
+    - mode: 600
+    - owner: mysql
+    - group: mysql
+    - source: salt://debian-packages/galera-server-cert.pem
+
+/etc/mysql/galera-server-key.pem:
+  file:
+    - managed
+    - mode: 600
+    - owner: mysql
+    - group: mysql
+    - source: salt://debian-packages/galera-server-key.pem
 
 
