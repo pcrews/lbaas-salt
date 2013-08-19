@@ -58,7 +58,7 @@ hp_az3_medium:
   ssh_username: ubuntu
   sudo: True
 
-hp_az2_small
+hp_az3_small:
   provider: openstack 
   image: 48335 
   size: 101
