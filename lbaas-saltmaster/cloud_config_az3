@@ -1,0 +1,13 @@
+minion:
+  master: {{ pillar['saltmaster_ip'] }} 
+
+OPENSTACK.identity_url: 'https://region-a.geo-1.identity.hpcloudsvc.com:35357/v2.0/'
+OPENSTACK.compute_name: Compute
+OPENSTACK.compute_region: 'az-3.region-a.geo-1'
+OPENSTACK.tenant: {{ pillar['saltmaster_openstack_tenant'] }} 
+OPENSTACK.user:  {{ pillar[saltmaster_openstack_user'] }}
+OPENSTACK.ssh_key_name: {{ pillar['saltmaster_openstack_sshkey_name'] }}
+OPENSTACK.ssh_key_file: {{ pillar['saltmaster_openstack_sshkey_path'] }} 
+OPENSTACK.password: {{ pillar['saltmaster_openstack_password'] }} 
+OPENSTACK.securitygroup: {{ pillar['saltmaster_openstack_secgroup'] }} 
+

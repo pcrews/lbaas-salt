@@ -1,0 +1,69 @@
+hp_az1_large:
+  provider: openstack 
+  image: 78497 
+  size: 103
+  os: ubuntu
+  ssh_username: ubuntu 
+  sudo: True
+
+hp_az1_medium:
+  provider: openstack
+  image: 78497
+  size: 102
+  os: ubuntu
+  ssh_username: ubuntu
+  sudo: True
+
+hp_az1_small:
+  provider: openstack
+  image: 78497
+  size: 101
+  os: ubuntu
+  ssh_username: ubuntu
+  sudo: True
+
+hp_az2_large:
+  provider: openstack
+  image: 67074
+  size: 103
+  ssh_username: ubuntu
+  sudo: True  
+
+hp_az2_medium:
+  provider: openstack
+  image: 67074
+  size: 102
+  ssh_username: ubuntu
+  sudo: True
+
+hp_az2_small:
+  provider: openstack
+  image: 67074
+  size: 101
+  ssh_username: ubuntu
+  sudo: True
+
+hp_az3_large:
+  provider: openstack 
+  image: 48335 
+  size: 103
+  os: ubuntu
+  ssh_username: ubuntu
+  sudo: True
+
+hp_az3_medium:
+  provider: openstack
+  image: 48335 
+  size: 102
+  ssh_username: ubuntu
+  sudo: True
+
+hp_az2_small
+  provider: openstack 
+  image: 48335 
+  size: 101
+  os: ubuntu
+  ssh_username: ubuntu
+  sudo: True
+
+
