@@ -47,6 +47,13 @@ python_installs:
     - source: salt://lbaas-saltmaster/cloud_config_az3
     - order: 7
 
+/etc/salt/cloudconfigs/cloud_az2:
+  file:
+    - managed
+    - template: jinja
+    - source: salt://lbaas-saltmaster/cloud_config_az2
+    - order: 7
+
 /root/.ssh/id_rsa:
   file:
     - managed
