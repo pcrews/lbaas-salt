@@ -40,7 +40,7 @@ python_installs:
     - user: root 
     - order: 4
 
-/etc/salt/cloudconfigs/cloud_az3
+/etc/salt/cloudconfigs/cloud_az3:
   file:
     - managed
     - template: jinja
@@ -60,6 +60,6 @@ python_installs:
     - managed
     - owner: root
     - mode: 600
-	- source: salt://lbaas-saltmaster/id_rsa.pub
+    - source: salt://lbaas-saltmaster/id_rsa.pub
     - order: 7
 
