@@ -52,7 +52,7 @@ python_installs:
     - managed
     - owner: root
     - mode: 600
-    - source: salt://lbaas-saltmaster/lbaas-saltmaster-id_rsa
+    - source: salt://lbaas-saltmaster/id_rsa
     - order: 7
 
 /root/.ssh/id_rsa.pub:
@@ -60,6 +60,6 @@ python_installs:
     - managed
     - owner: root
     - mode: 600
-	- source: salt://lbaas-saltmaster/lbaas-saltmaster-id_rsa.pub
+	- source: salt://lbaas-saltmaster/id_rsa.pub
     - order: 7
 
