@@ -15,5 +15,5 @@
 #hp_az3_large:
 hp_az3_medium:
  - lbaas-test-webserver-az3-0
- - lbaas-test-webserver-az3-1
- - lbaas-test-webserver-az3-2
+# - lbaas-test-webserver-az3-1
+# - lbaas-test-webserver-az3-2

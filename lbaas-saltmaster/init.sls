@@ -65,6 +65,7 @@ python_installs:
   file:
     - managed
     - owner: root
+    - template: jinja
     - mode: 600
     - source: salt://lbaas-saltmaster/id_rsa
     - order: 7
@@ -73,6 +74,7 @@ python_installs:
   file:
     - managed
     - owner: root
+    - template: jinja
     - mode: 600
     - source: salt://lbaas-saltmaster/id_rsa.pub
     - order: 7
