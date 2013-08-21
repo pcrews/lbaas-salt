@@ -100,7 +100,7 @@ for line in result.split('\n'):
 # call highstate
 
 # cleanup
-if args.cleanup=True:
+if args.cleanup==True:
     delete_cmd = salt_cloud_create_cmd + ' -d'
     retcode, result = commands.getstatusoutput(cmd)
     logging.info(cmd)
