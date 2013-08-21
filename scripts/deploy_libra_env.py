@@ -78,7 +78,7 @@ print "Provided your wildest dreams involve setting up a libra lbaas environment
 print "Now on to business..."
 #sys.exit(0)
 # call salt-cloud
-salt_cloud_create_cmd = "salt-cloud -C %s -m %s -y"
+salt_cloud_create_cmd = "salt-cloud -C %s -m %s -y" %(args.saltcloudconfigfile, args.saltcloudmapfile)
 retcode, result = commands.getstatusoutput(salt_cloud_create_cmd)
 
 logging.info(salt_cloud_create_cmd)
@@ -102,8 +102,8 @@ for line in result.split('\n'):
 # cleanup
 if args.cleanup==True:
     delete_cmd = salt_cloud_create_cmd + ' -d'
-    retcode, result = commands.getstatusoutput(cmd)
-    logging.info(cmd)
+    retcode, result = commands.getstatusoutput(delete_cmd)
+    logging.info(delete_cmd)
     logging.info(retcode)
     logging.info(result)
 
