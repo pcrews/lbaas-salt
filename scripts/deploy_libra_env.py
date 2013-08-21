@@ -86,10 +86,28 @@ logging.info(retcode)
 logging.info(result)
 
 # gather ips + names
+lbaas_vms = {}
+name_next = False
+ip_next = False
+node_name = None
 for line in result.split('\n'):
     print line
-    print '-' *80
-    print
+    if line.strip().startswith('name:'):
+        name_next=True
+    elif name_next:
+        node_name = line.strip()
+        lbaas_vms[node_name]=''
+        name_next=False
+    elif line.strip().startswith('public_ips:'):
+        ip_next = True
+    elif ip_next:
+        lbaas_vms[node_name] = line.strip()
+        node_name = None
+        ip_next = False
+
+print "Libra infrastructure nodes:"
+for key, item in lbaas_vms.items():
+   print '    %s: %s' %(key, item)
 
 # update pillar
 
