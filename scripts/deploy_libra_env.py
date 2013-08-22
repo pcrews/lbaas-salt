@@ -111,7 +111,7 @@ for key, item in lbaas_vms.items():
 
 # update pillar
 print "Updating pillar data and updating nodes' pillars..."
-pillar_file = '/srv/lbaas-staging-pillar/base_pillar.sls'
+pillar_file = '/srv/lbaas-staging-pillar/bootstrap_pillar.sls'
 with open(pillar_file,'a') as outfile:
     for key, item in lbaas_vms.items():
         # This is a bit bobo - we just cheat and repeat servers
