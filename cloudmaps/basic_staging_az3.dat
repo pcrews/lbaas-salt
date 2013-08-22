@@ -17,5 +17,6 @@ hp_az3_large:
  - lbaas-stage-galera-1
  - lbaas-stage-gearman-1
  - lbaas-stage-poolmgm-1
+ - lbaas-stage-haproxy-base
 
 
