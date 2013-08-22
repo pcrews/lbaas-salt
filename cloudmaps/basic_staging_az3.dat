@@ -13,9 +13,9 @@
 # under the License.
 
 hp_az3_large:
- - lbaas-stage-pyapi-az3-1
- - lbaas-stage-galera-az3-1
- - lbaas-stage-gearman-az3-1
- - lbaas-stage-poolmgm-az3-1
+ - lbaas-api-1
+ - lbaas-galera-1
+ - lbaas-gearman-1
+ - lbaas-poolmgm-1
 
 
