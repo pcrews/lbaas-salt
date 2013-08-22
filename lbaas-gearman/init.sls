@@ -11,8 +11,7 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
-
-
+{% if pillar['gearman_ssl'] == 'True' %}
 ssl_pkg_cyassl:
    file.managed:
      - name: /home/ubuntu/cyassl_2.7.0-1_amd64.deb
@@ -56,39 +55,6 @@ ssl_gearman_tools:
      - require:
        - file: /home/ubuntu/gearman-tools_1.1.9~20130802-1_amd64.deb
      - order: 4
-
-update_apt:
-  cmd.run:
-    - name: apt-get update
-    - order: 5
-
-fix_packaging:
-  cmd.run:
-    - name: apt-get -f -y install
-    - order: 6 
-
-/etc/default/gearman-job-server:
-  file:
-    - managed
-    - source: salt://lbaas-gearman/gearman-job-server
-    - order: 6 
-
-stop_gearman:
-  cmd.run:
-    - name: 'service gearman-job-server stop'
-    - order: 7 
-
-start_gearman:
-  cmd.run:
-    - name: 'service gearman-job-server start '
-    - order: last 
-
-/etc/beaver.cfg:
-  file:
-    - managed
-    - template: jinja
-    - source: salt://lbaas-gearman/beaver.cfg
-    - order: 6
 
 /etc/ssl/certs/gearmand-ca.pem:
   file:
@@ -139,4 +105,50 @@ start_gearman:
     - group: ubuntu
     - source: salt://debian-packages/gearman.pem
     - order: 6
+{% else %}
+
+required_packages:
+  pkg.installed:
+    - pkgs:
+      - gearman-job-server
+      - gearman-tools
+    - order: 1
+
+{% endif %}
+
+update_apt:
+  cmd.run:
+    - name: apt-get update
+    - order: 5
+
+fix_packaging:
+  cmd.run:
+    - name: apt-get -f -y install
+    - order: 6 
+
+/etc/default/gearman-job-server:
+  file:
+    - managed
+    - source: salt://lbaas-gearman/gearman-job-server
+    - order: 6 
+
+stop_gearman:
+  cmd.run:
+    - name: 'service gearman-job-server stop'
+    - order: 7 
+
+start_gearman:
+  cmd.run:
+    - name: 'service gearman-job-server start '
+    - order: last 
+
+{% if pillar['use_beaver'] == 'True' %}
+/etc/beaver.cfg:
+  file:
+    - managed
+    - template: jinja
+    - source: salt://lbaas-gearman/beaver.cfg
+    - order: 6
+{% endif %}
+
 
