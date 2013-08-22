@@ -145,7 +145,7 @@ logging.info(retcode)
 logging.info(result)
 
 # create haproxy image
-logging.info("Salting haproxy worker base image...)
+logging.info("Salting haproxy worker base image...")
 cmd = "sudo salt *haproxy* state.highstate"
 retcode, result = commands.getstatusoutput(cmd)
 logging.info(cmd)
