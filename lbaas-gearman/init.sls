@@ -129,6 +129,7 @@ fix_packaging:
 /etc/default/gearman-job-server:
   file:
     - managed
+    - template: jinja
     - source: salt://lbaas-gearman/gearman-job-server
     - order: 6 
 
