@@ -79,12 +79,15 @@ galera_user_grants:
     - host: localhost
     - order: 1001
 
+{% if pillar['use_beaver'] == 'True' %}
 /etc/beaver.cfg:
   file:
     - managed
     - template: jinja
     - source: salt://lbaas-galera/beaver.cfg
+{% endif %}
 
+{% if pillar['galera_ssh'] == 'True' %}
 /etc/mysql/galera-key.pem:
   file:
     - managed
@@ -125,4 +128,5 @@ galera_user_grants:
     - group: mysql
     - source: salt://debian-packages/galera-server-key.pem
 
+{% endif %}
 
