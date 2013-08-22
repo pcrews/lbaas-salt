@@ -77,9 +77,10 @@ setup-libra-pool-mgm:
     - cwd: /home/ubuntu/libra
     - order:  last 
 
+{% if pillar['use_beaver'] == 'True' %}
 /etc/beaver.cfg:
   file:
     - managed
     - template: jinja
     - source: salt://lbaas-poolmgm/beaver.cfg
-    
+{% endif %}

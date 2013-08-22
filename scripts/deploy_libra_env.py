@@ -144,16 +144,20 @@ logging.info(cmd)
 logging.info(retcode)
 logging.info(result)
 
-# test nodes
+# create haproxy image
 
 # update pillar
 
-# call highstate
-cmd = "sudo salt *galera* state.highstate"
-retcode, result = commands.getstatusoutput(cmd)
-logging.info(cmd)
-logging.info(retcode)
-logging.info(result)
+# call highstate on remaining nodes
+servers = ['galera','gearman','pool']
+for servername in servers:
+    logging.info("Salting %s server(s)..." %servername)
+    cmd = "sudo salt *%s* state.highstate" %servername
+    retcode, result = commands.getstatusoutput(cmd)
+    logging.info(cmd)
+    logging.info(retcode)
+    logging.info(result)
+
 
 # cleanup
 if args.cleanup==True:
