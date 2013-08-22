@@ -15,6 +15,10 @@
 #
 # Missing examples for memcache persitent queue store...
 
+{% if pillar['gearman_ssl'] == 'True' %}
 # Parameters to pass to gearmand.
 PARAMS="--listen=0.0.0.0 --verbose=DEBUG --ssl"
+{% else %}
+PARAMS="--listen=0.0.0.0 --verbose=DEBUG"
+{% endif %}
 
