@@ -129,7 +129,7 @@ with open(pillar_file,'a') as outfile:
             for i in range(3):
                 pillar_name = 'lbaas_galera_%d' %(i+1)
                 outfile.write("%s: %s\n" %(pillar_name,item))
-            outfile.write("lbaas_galera_cluster_address: gcomm:// %s\n" %item)
+            outfile.write("lbaas_galera_cluster_address: gcomm:// \n")
             outfile.write("lbaas_galera_wsrep_node_address: %s\n" %item)
         elif 'gearman' in key:
             for i in range(2):
