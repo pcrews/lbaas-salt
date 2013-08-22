@@ -101,7 +101,7 @@ for line in result.split('\n'):
     elif line.strip().startswith('public_ips:'):
         ip_next = True
     elif ip_next:
-        lbaas_vms[node_name] = line.strip()
+        lbaas_vms[node_name] = line.replace('-','').strip()
         node_name = None
         ip_next = False
 
@@ -110,12 +110,50 @@ for key, item in lbaas_vms.items():
    print '    %s: %s' %(key, item)
 
 # update pillar
+print "Updating pillar data and updating nodes' pillars..."
+pillar_file = '/srv/lbaas-salt-pillar/base_pillar.sls'
+with open(pillar_file,'a') as outfile:
+    for key, item in lbaas_vms.items():
+        # This is a bit bobo - we just cheat and repeat servers
+        # until we have proper logic for controlling / detecting infrastructure
+        # that handles this as it should
+        pillar_name = key.replace('-','_')
+        if 'api' in key:
+            for i in range(3):
+                pillar_name = 'lbaas_api_%d' %(i+1)
+                outfile.write("%s: %s\n" %(pillar_name,item))
+                outfile.write("%s_floating_ip: %s\n" %(pillar_name, item))
+        elif 'pool' in key:
+            outfile.write("lbaas_pool_mgm_1: %s\n" %(item))
+        elif 'galera' in key:
+            for i in range(3):
+                pillar_name = 'lbaas_galera_%d' %(i+1)
+                outfile.write("%s: %s\n" %(pillar_name,item))
+            outfile.write("lbaas_galera_cluster_address: gcomm:// %s" %item)
+            outfile.write("lbaas_galera_wsrep_node_address: %s" %item)
+        elif 'gearman' in key:
+            for i in range(2):
+                pillar_name = 'lbaas_gearman%d' %(i+1)
+                outfile.write("%s: %s\n" %(pillar_name,item))
+                outfile.write("%s_floating_ip: %s\n" %(pillar_name, item))
+
+# restart salt-master:
+cmd = "sudo service salt-master restart"
+retcode, result = commands.getstatusoutput(cmd)
+logging.info(cmd)
+logging.info(retcode)
+logging.info(result)
 
 # test nodes
 
 # update pillar
 
 # call highstate
+cmd = "sudo salt *galera* state.highstate"
+retcode, result = commands.getstatusoutput(cmd)
+logging.info(cmd)
+logging.info(retcode)
+logging.info(result)
 
 # cleanup
 if args.cleanup==True:
