@@ -117,7 +117,7 @@ with open(pillar_file,'a') as outfile:
         # This is a bit bobo - we just cheat and repeat servers
         # until we have proper logic for controlling / detecting infrastructure
         # that handles this as it should
-        pillar_name = key.replace('-','_')
+        pillar_name = key.replace('-','_').replace('-stage','')
         if 'api' in key:
             for i in range(3):
                 pillar_name = 'lbaas_api_%d' %(i+1)
