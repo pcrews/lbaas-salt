@@ -92,6 +92,17 @@ if args.verbose:
     logging.info("argument values:")
     for key, item in vars(args).items():
         logging.info("\t%s: %s" %(key, item))
+
+logging.info("Updating environment vars w/ openstack credentials...")
+os_values = { 'OS_USERNAME':args.osuser
+            , 'OS_TENANT_NAME': args.ostenant
+            , 'OS_PASSWORD': args.ospassword
+            , 'OS_AUTH_URL': args.osauthurl
+            , 'OS_REGION_NAME': args.osregion
+            }
+for key, value in os_values:
+    os.environ[key]=value
+            
 """
 if args.configfile:
     # We have a magic config file that we expect to be in key: value format
