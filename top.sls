@@ -6,6 +6,9 @@ stage:
     'lbaas-stage-pyapi-az*':
       - lbaas-pyapi
       - common_gearman
+    'lbaas-stage-api*':
+      - lbaas-pyapi
+      - common_gearman
     'lbaas-stage*poolmgm*':
       - lbaas-poolmgm
     'lbaas-stage*gearman*':
