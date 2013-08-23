@@ -100,7 +100,7 @@ os_values = { 'OS_USERNAME':args.osuser
             , 'OS_AUTH_URL': args.osauthurl
             , 'OS_REGION_NAME': args.osregion
             }
-for key, value in os_values:
+for key, value in os_values.items():
     os.environ[key]=value
             
 """
