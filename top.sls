@@ -27,6 +27,8 @@ stage:
       - lbaas-stressor
     'lbaas-stage-web*':
       - lbaas-web
+    'lbaas-test-web*':
+      - lbaas-web
     '*stage*saltmaster*':
       - lbaas-saltmaster
     '*test*saltmaster*':
