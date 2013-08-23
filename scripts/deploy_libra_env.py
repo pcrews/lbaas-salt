@@ -14,6 +14,8 @@ import logging
 import argparse
 import commands
 
+from time import gmtime, strftime
+
 ##########
 # parser
 ##########
@@ -48,7 +50,36 @@ parser.add_argument( '--cleanup'
                    , default = False
                    , help = 'flag to toggle deletion of the salt-cloud created vms once complete'
                    )
-
+parser.add_argument( '--os_user'
+                   , action = 'store'
+                   , dest ='osuser'
+                   , default = None
+                   , help = 'OpenStack username for the account that will own the deployment.'
+                   )
+parser.add_argument( '--os_tenant'
+                   , action = 'store'
+                   , dest ='ostenant'
+                   , default = None
+                   , help = 'OpenStack tenant name for the account that will own the deployment.'
+                   )
+parser.add_argument( '--os_password'
+                   , action = 'store'
+                   , dest ='ospassword'
+                   , default = None
+                   , help = 'OpenStack password for the account that will own the deployment.'
+                   )
+parser.add_argument( '--os_region'
+                   , action = 'store'
+                   , dest ='osregion'
+                   , default = None
+                   , help = 'OpenStack region for deployment'
+                   )
+parser.add_argument( '--os_auth_url'
+                   , action = 'store'
+                   , dest ='osauthurl'
+                   , default = None
+                   , help = 'OpenStack auth url'
+                   )
 
 ######
 # main
@@ -152,9 +183,73 @@ logging.info(cmd)
 logging.info(retcode)
 logging.info(result)
 
-# update pillar
+logging.info("calling sync on haproxy worker base image...")
+cmd = "sudo salt *haproxy* cmd.run 'sync'"
+retcode, result = commands.getstatusoutput(cmd)
+logging.info(cmd)
+logging.info(retcode)
+logging.info(result)
+
+logging.info("calling 'nova image' on haproxy worker base image...")
+print "Finding nova id for haproxy image"
+cmd = 'nova list | grep haproxy'
+status, output = commands.getstatusoutput(cmd)
+logging.info(cmd)
+logging.info(retcode)
+logging.info(output)
+output = output.split('\n')
+nova_id = output[0].split('|')[1]
+logging.info( 'Nova id: %s' %nova_id)
+logging.info( '#'*80)
+logging.info("Creating nova image from Nova instance: %s" %(nova_id))
+
+image_id = None
+date_info = strftime("%Y%m%d-%H%M%S", gmtime())
+image_name = "lbaas-stage-haproxy-%s" %(date_info)
+logging.info("Image name: %s" %image_name)
+cmd = 'nova image-create %s %s' %(nova_id, image_name)
+status, output = commands.getstatusoutput(cmd)
+logging.info(cmd)
+logging.info(retcode)
+logging.info(output)
+
+save_done = False
+attempts_remaining = 30
+sleep_time = 3
+while not save_done and attempts_remaining:
+    attempts_remaining -= 1
+    cmd = 'nova image-list | grep %s' %(image_name)
+    status, output = commands.getstatusoutput(cmd)
+    output_data = output.split('\n')[0].split('|')
+    if output_data[3].strip() == 'ACTIVE':
+        save_done = True
+        logging.info(cmd)
+        logging.info(retcode)
+        logging.info(output)
+        image_id = output_data[1]
+    else:
+        logging.info("Waiting for image save to finish...")
+        time.sleep(sleep_time)
+
+cmd = 'nova list | grep haproxy'
+status, output = commands.getstatusoutput(cmd)
+logging.info(cmd)
+logging.info(retcode)
+logging.info(output)
+
+logging.info('')
+logging.info('='*80)
+logging.info('IMAGE_ID: %s' %image_id)
+logging.info('='*80)
+logging.info('')
+time.sleep(10)
+
+logging.info("updating saltmaster pillar...")
+with open(pillar_file,'a') as outfile:
+    outfile.write('lbaas-nodes-image-id: %s\n' %image_id)
 
 # call highstate on remaining nodes
+logging.info("Salting remaining servers...")
 servers = ['galera','gearman','pool']
 for servername in servers:
     logging.info("Salting %s server(s)..." %servername)
