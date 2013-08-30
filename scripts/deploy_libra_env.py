@@ -261,10 +261,11 @@ with open(pillar_file,'a') as outfile:
 
 # call highstate on remaining nodes
 logging.info("Salting remaining servers...")
-servers = ['galera','gearman','pool']
+servers = ['*galera*','*gearman*','*pool*']
+servers = ['*']
 for servername in servers:
     logging.info("Salting %s server(s)..." %servername)
-    cmd = "sudo salt *%s* state.highstate" %servername
+    cmd = "sudo salt %s state.highstate" %servername
     retcode, result = commands.getstatusoutput(cmd)
     logging.info(cmd)
     logging.info(retcode)
