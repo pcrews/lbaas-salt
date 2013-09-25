@@ -1,3 +1,13 @@
+""" test_mysql_restore.py:
+    unittest module to help us validate mysql backups
+    we spin a vm via salt-cloud, configure it to be a mysql server,
+    restore the data, then ensure we can query the data
+
+    We have jenkins call this job as follows:
+    python -m unittest discover <path/to/salt/scripts/dir> 'test_mysql_restore.py'
+"""
+
+
 import os
 import sys
 import commands
