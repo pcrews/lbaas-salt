@@ -1,7 +1,7 @@
 stage:
     #'*stage*':
     '*':
-      - common_logging
+  #    - common_logging
       - common_admin
     'lbaas-stage-pyapi-az*':
       - lbaas-pyapi
@@ -9,6 +9,7 @@ stage:
     'lbaas-stage-api*':
       - lbaas-pyapi
       - common_gearman
+      # - libra_common
     'lbaas-stage*poolmgm*':
       - lbaas-poolmgm
     'lbaas-stage*gearman*':
