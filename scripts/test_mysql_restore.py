@@ -18,8 +18,10 @@ class testMySQLBackupRestore(unittest.TestCase):
         # NOTE: we don't use setUp as we want to ensure we try to wipe the vm
         # if we had machine creation in setUp, tearDown might not run...
         self.vm_name = os.environ['TEST_MINION_NAME']
-        self.config_file = "/etc/salt/cloud.lbaas_tools_az2"
-        self.profile_name = "hp_az2_large"
+        self.az = os.environ['TEST_AZ']
+        self.vm_size = os.environ['TEST_VM_SIZE']
+        self.config_file = "/etc/salt/cloud.lbaas_tools_%s" %self.az
+        self.profile_name = "hp_%s_%s" %(self.az, self.vm_size)
         # create test vm
         print "Creating test vm: %s..." %self.vm_name
         cmd = "sudo salt-cloud -C %s -p %s %s " %(self.config_file, self.profile_name, self.vm_name)
