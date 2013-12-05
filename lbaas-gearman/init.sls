@@ -102,54 +102,6 @@ test_cmd:
     - source: salt://debian-packages/gearman.pem
     - order: 6
 {% else %}
-
-required_packages:
-  pkg.installed:
-    - pkgs:
-      - gearman-job-server
-      - gearman-tools
-    - order: 1
-
-{% endif %}
-
-update_apt:
-  cmd.run:
-    - name: apt-get update
-    - order: 5
-
-fix_packaging:
-  cmd.run:
-    - name: apt-get -f -y install
-    - order: 6 
-
-/etc/default/gearman-job-server:
-  file:
-    - managed
-    - template: jinja
-    - source: salt://lbaas-gearman/gearman-job-server
-    - order: 6 
-
-stop_gearman:
-  cmd.run:
-    - name: 'service gearman-job-server stop'
-    - order: 7 
-
-start_gearman:
-  cmd.run:
-    - name: 'service gearman-job-server start '
-    - order: last 
-
-{% if pillar['use_beaver'] == 'True' %}
-/etc/beaver.cfg:
-  file:
-    - managed
-    - template: jinja
-    - source: salt://lbaas-gearman/beaver.cfg
-    - order: 6
-{% endif %}
-
-
-{% else %}
 test_cmd2:
   cmd.run:
     - name: "echo NO SSL FOR YOU!!!!!!!!!!!!!!!!!!!!!!!"
@@ -181,5 +133,4 @@ start_gearman:
     - source: salt://lbaas-gearman/beaver.cfg
     - order: 6
 {% endif %}
-
 
