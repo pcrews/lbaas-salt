@@ -35,6 +35,22 @@ lbaasapi-install-deb-{{ deb_name }}:
     - managed
     - source: salt://scripts/backup_and_store_directory.py
 
+/etc/libra/logging_api.cfg:
+  file:
+    - managed
+    - mode: 755 
+    - source: salt://lbaas-pyapi/logging_api.cfg
+    - owner: libra
+    - group: libra
+
+/etc/libra/logging_admin_api.cfg:
+  file:
+    - managed
+    - mode: 755
+    - source: salt://lbaas-pyapi/logging_admin_api.cfg
+    - owner: libra
+    - group: libra
+
 /etc/libra.cfg:
   file:
     - managed
