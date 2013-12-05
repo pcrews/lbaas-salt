@@ -14,7 +14,12 @@
 #                       --libdrizzle-table=gearman_queue --libdrizzle-mysql"
 #
 # Missing examples for memcache persitent queue store...
+# add --verbose=DEBUG for additional troubleshooting output
 
+{% if pillar['gearman_ssl'] == True %}
 # Parameters to pass to gearmand.
-PARAMS="--listen=0.0.0.0 --verbose=DEBUG --ssl"
+PARAMS="--listen=0.0.0.0 --ssl "
+{% else %}
+PARAMS="--listen=0.0.0.0 "
+{% endif %}
 

@@ -11,84 +11,46 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
+include:
+  - libra_common
 
+required_packages:
+  pkg.installed:
+    - pkgs:
+      - gearman-job-server
+      - gearman-tools
+    - order: 0 
 
-ssl_pkg_cyassl:
-   file.managed:
-     - name: /home/ubuntu/cyassl_2.7.0-1_amd64.deb
-     - source: salt://debian-packages/cyassl_2.7.0-1_amd64.deb
-   cmd.run:
-     - name: dpkg -i cyassl_2.7.0-1_amd64.deb
-     - cwd: /home/ubuntu
-     - require:
-       - file: /home/ubuntu/cyassl_2.7.0-1_amd64.deb
-     - order: 1
-
-ssl_pkg_libgearman:
-   file.managed:
-     - name: /home/ubuntu/libgearman8_1.1.9~20130802-1_amd64.deb
-     - source: salt://debian-packages/libgearman8_1.2~20130725-1_amd64.deb
-   cmd.run:
-     - name: dpkg -i libgearman8_1.1.1.9~20130802-1_amd64.deb
-     - cwd: /home/ubuntu
-     - require:
-       - file: /home/ubuntu/libgearman8_1.1.9~20130802-1_amd64.deb
-     - order: 2
-
-ssl_pkg_gearman_job_server:
-   file.managed:
-     - name: /home/ubuntu/gearman-job-server_1.1.9~20130802-1_amd64.deb
-     - source: salt://debian-packages/gearman-job-server_1.1.9~20130802-1_amd64.deb
-   cmd.run:
-     - name: dpkg -i gearman-job-server_1.1.9~20130802-1_amd64.deb
-     - cwd: /home/ubuntu
-     - require:
-       - file: /home/ubuntu/gearman-job-server_1.1.9~20130802-1_amd64.deb
-     - order: 3
-
-ssl_gearman_tools:
-   file.managed:
-     - name: /home/ubuntu/gearman-tools_1.1.9~20130802-1_amd64.deb
-     - source: salt://debian-packages/gearman-tools_1.1.9~20130802-1_amd64.deb
-   cmd.run:
-     - name: dpkg -i gearman-tools_1.1.9~20130802-1_amd64.deb
-     - cwd: /home/ubuntu
-     - require:
-       - file: /home/ubuntu/gearman-tools_1.1.9~20130802-1_amd64.deb
-     - order: 4
-
-update_apt:
+{% if pillar['use_datadog'] == True %}
+install_datadog:
   cmd.run:
-    - name: apt-get update
-    - order: 5
+    - name: DD_API_KEY={{ pillar['lbaas_datadog_api_key'] }} bash -c "$(wget -qO- http://dtdg.co/agent-install-ubuntu)"
+    - order: 2
 
-fix_packaging:
-  cmd.run:
-    - name: apt-get -f -y install
-    - order: 6 
-
-/etc/default/gearman-job-server:
+/etc/dd-agent/datadog.conf:
   file:
     - managed
-    - source: salt://lbaas-gearman/gearman-job-server
-    - order: 6 
-
-stop_gearman:
-  cmd.run:
-    - name: 'service gearman-job-server stop'
-    - order: 7 
-
-start_gearman:
-  cmd.run:
-    - name: 'service gearman-job-server start '
-    - order: last 
-
-/etc/beaver.cfg:
+    - source: salt://lbaas-gearman/datadog.conf
+    - order: 7
+    
+/usr/share/datadog/agent/checks.d/network.py:
   file:
     - managed
-    - template: jinja
-    - source: salt://lbaas-gearman/beaver.cfg
-    - order: 6
+    - source: salt://lbaas-gearman/network.py
+    - order: 7
+
+/etc/ddagent/checks.d/network.yaml:
+  file:
+    - managed
+    - source: salt://lbaas-gearman/network.yaml
+    - order: 7
+
+{% endif %}
+
+{% if pillar['gearman_ssl'] == True %}
+test_cmd:
+  cmd.run:
+    - name: "echo HEEELLLLOOOOOO SSL"
 
 /etc/ssl/certs/gearmand-ca.pem:
   file:
@@ -139,4 +101,38 @@ start_gearman:
     - group: ubuntu
     - source: salt://debian-packages/gearman.pem
     - order: 6
+
+{% else %}
+test_cmd2:
+  cmd.run:
+    - name: "echo NO SSL FOR YOU!!!!!!!!!!!!!!!!!!!!!!!"
+
+{% endif %}
+
+/etc/default/gearman-job-server:
+  file:
+    - managed
+    - template: jinja
+    - source: salt://lbaas-gearman/gearman-job-server
+    - order: 6 
+
+stop_gearman:
+  cmd.run:
+    - name: 'service gearman-job-server stop'
+    - order: 7 
+
+start_gearman:
+  cmd.run:
+    - name: 'service gearman-job-server start '
+    - order: last 
+
+{% if pillar['use_beaver'] == True %}
+/etc/beaver.cfg:
+  file:
+    - managed
+    - template: jinja
+    - source: salt://lbaas-gearman/beaver.cfg
+    - order: 6
+{% endif %}
+
 

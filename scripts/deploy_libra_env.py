@@ -14,6 +14,8 @@ import logging
 import argparse
 import commands
 
+from time import gmtime, strftime
+
 ##########
 # parser
 ##########
@@ -48,7 +50,36 @@ parser.add_argument( '--cleanup'
                    , default = False
                    , help = 'flag to toggle deletion of the salt-cloud created vms once complete'
                    )
-
+parser.add_argument( '--os_user'
+                   , action = 'store'
+                   , dest ='osuser'
+                   , default = None
+                   , help = 'OpenStack username for the account that will own the deployment.'
+                   )
+parser.add_argument( '--os_tenant'
+                   , action = 'store'
+                   , dest ='ostenant'
+                   , default = None
+                   , help = 'OpenStack tenant name for the account that will own the deployment.'
+                   )
+parser.add_argument( '--os_password'
+                   , action = 'store'
+                   , dest ='ospassword'
+                   , default = None
+                   , help = 'OpenStack password for the account that will own the deployment.'
+                   )
+parser.add_argument( '--os_region'
+                   , action = 'store'
+                   , dest ='osregion'
+                   , default = None
+                   , help = 'OpenStack region for deployment'
+                   )
+parser.add_argument( '--os_auth_url'
+                   , action = 'store'
+                   , dest ='osauthurl'
+                   , default = None
+                   , help = 'OpenStack auth url'
+                   )
 
 ######
 # main
@@ -61,6 +92,17 @@ if args.verbose:
     logging.info("argument values:")
     for key, item in vars(args).items():
         logging.info("\t%s: %s" %(key, item))
+
+logging.info("Updating environment vars w/ openstack credentials...")
+os_values = { 'OS_USERNAME':args.osuser
+            , 'OS_TENANT_NAME': args.ostenant
+            , 'OS_PASSWORD': args.ospassword
+            , 'OS_AUTH_URL': args.osauthurl
+            , 'OS_REGION_NAME': args.osregion
+            }
+for key, value in os_values.items():
+    os.environ[key]=value
+            
 """
 if args.configfile:
     # We have a magic config file that we expect to be in key: value format
@@ -111,13 +153,13 @@ for key, item in lbaas_vms.items():
 
 # update pillar
 print "Updating pillar data and updating nodes' pillars..."
-pillar_file = '/srv/lbaas-salt-pillar/base_pillar.sls'
+pillar_file = '/srv/lbaas-staging-pillar/bootstrap_pillar.sls'
 with open(pillar_file,'a') as outfile:
     for key, item in lbaas_vms.items():
         # This is a bit bobo - we just cheat and repeat servers
         # until we have proper logic for controlling / detecting infrastructure
         # that handles this as it should
-        pillar_name = key.replace('-','_')
+        pillar_name = key.replace('-','_').replace('-stage','')
         if 'api' in key:
             for i in range(3):
                 pillar_name = 'lbaas_api_%d' %(i+1)
@@ -129,8 +171,8 @@ with open(pillar_file,'a') as outfile:
             for i in range(3):
                 pillar_name = 'lbaas_galera_%d' %(i+1)
                 outfile.write("%s: %s\n" %(pillar_name,item))
-            outfile.write("lbaas_galera_cluster_address: gcomm:// %s" %item)
-            outfile.write("lbaas_galera_wsrep_node_address: %s" %item)
+            outfile.write("lbaas_galera_cluster_address: gcomm:// \n")
+            outfile.write("lbaas_galera_wsrep_node_address: %s\n" %item)
         elif 'gearman' in key:
             for i in range(2):
                 pillar_name = 'lbaas_gearman%d' %(i+1)
@@ -144,16 +186,91 @@ logging.info(cmd)
 logging.info(retcode)
 logging.info(result)
 
-# test nodes
-
-# update pillar
-
-# call highstate
-cmd = "sudo salt *galera* state.highstate"
+# create haproxy image
+logging.info("Salting haproxy worker base image...")
+cmd = "sudo salt *haproxy* state.highstate"
 retcode, result = commands.getstatusoutput(cmd)
 logging.info(cmd)
 logging.info(retcode)
 logging.info(result)
+
+logging.info("calling sync on haproxy worker base image...")
+cmd = "sudo salt *haproxy* cmd.run 'sync'"
+retcode, result = commands.getstatusoutput(cmd)
+logging.info(cmd)
+logging.info(retcode)
+logging.info(result)
+
+logging.info("calling 'nova image' on haproxy worker base image...")
+print "Finding nova id for haproxy image"
+cmd = 'nova list | grep haproxy'
+status, output = commands.getstatusoutput(cmd)
+logging.info(cmd)
+logging.info(retcode)
+logging.info(output)
+output = output.split('\n')
+nova_id = output[0].split('|')[1]
+logging.info( 'Nova id: %s' %nova_id)
+logging.info( '#'*80)
+logging.info("Creating nova image from Nova instance: %s" %(nova_id))
+
+image_id = None
+date_info = strftime("%Y%m%d-%H%M%S", gmtime())
+image_name = "lbaas-stage-haproxy-%s" %(date_info)
+logging.info("Image name: %s" %image_name)
+cmd = 'nova image-create %s %s' %(nova_id, image_name)
+status, output = commands.getstatusoutput(cmd)
+logging.info(cmd)
+logging.info(retcode)
+logging.info(output)
+
+save_done = False
+attempts_remaining = 30
+sleep_time = 3
+while not save_done and attempts_remaining:
+    attempts_remaining -= 1
+    cmd = 'nova image-list | grep %s' %(image_name)
+    status, output = commands.getstatusoutput(cmd)
+    output_data = output.split('\n')[0].split('|')
+    if output_data[3].strip() == 'ACTIVE':
+        save_done = True
+        logging.info(cmd)
+        logging.info(retcode)
+        logging.info(output)
+        image_id = output_data[1]
+    else:
+        logging.info("Waiting for image save to finish...")
+        time.sleep(sleep_time)
+
+cmd = 'nova list | grep haproxy'
+status, output = commands.getstatusoutput(cmd)
+logging.info(cmd)
+logging.info(retcode)
+logging.info(output)
+
+logging.info('')
+logging.info('='*80)
+logging.info('IMAGE_ID: %s' %image_id)
+logging.info('='*80)
+logging.info('')
+time.sleep(10)
+
+logging.info("updating saltmaster pillar...")
+with open(pillar_file,'a') as outfile:
+    outfile.write('lbaas-nodes-image-id: %s\n' %image_id)
+
+# call highstate on remaining nodes
+logging.info("Salting remaining servers...")
+servers = ['*galera*','*gearman*','*pool*']
+servers = ['*']
+for servername in servers:
+    logging.info("Salting %s server(s)..." %servername)
+    cmd = "sudo salt \%s state.highstate" %servername
+    retcode, result = commands.getstatusoutput(cmd)
+    logging.info(cmd)
+    logging.info(retcode)
+    logging.info(result)
+
 
 # cleanup
 if args.cleanup==True:

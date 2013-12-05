@@ -23,14 +23,9 @@ beaver_logging_packages:
       - python-pip
     - order: 1
 
-beaver-git:
-   require:
-     - pkg: git
-   git.latest:
-    - cwd: /home/ubuntu
-    - name: https://github.com/josegonzalez/beaver.git 
-    - target: /home/ubuntu/beaver
-    - force: True
+install_beaver_pip:
+  cmd.run:
+    - name: pip install beaver==28
 
 /etc/ssl/beaver_rsa:
   file:
@@ -51,8 +46,3 @@ beaver-git:
     - user: root
     - fingerprint: {{ pillar['logging_ssh_remote_host_fingerprint'] }} 
 
-install_beaver:
-  cmd.run:
-    - name: 'python setup.py install'
-    - cwd: /home/ubuntu/beaver
-    - order: last

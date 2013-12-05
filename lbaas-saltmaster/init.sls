@@ -34,48 +34,51 @@ python_installs:
     - name: pip install requests eventlet python-novaclient python-swiftclient python-keystoneclient 
     - order: 2
 
-/etc/salt/cloudconfigs:
-  file.directory:
-    - makedirs: True
-    - user: root 
-    - order: 4
+include:
+  - lbaas-jenkins-slave
 
-/etc/salt/cloudconfigs/cloud_az3:
-  file:
-    - managed
-    - template: jinja
-    - source: salt://lbaas-saltmaster/cloud_config_az3
-    - order: 7
+#/etc/salt/cloudconfigs:
+#  file.directory:
+#    - makedirs: True
+#    - user: root 
+#    - order: 4
 
-/etc/salt/cloudconfigs/cloud_az2:
-  file:
-    - managed
-    - template: jinja
-    - source: salt://lbaas-saltmaster/cloud_config_az2
-    - order: 7
+#/etc/salt/cloudconfigs/cloud_az3:
+#  file:
+#    - managed
+#    - template: jinja
+#    - source: salt://lbaas-saltmaster/cloud_config_az3
+#    - order: 7
 
-/etc/salt/cloud.profiles:
-  file:
-    - managed
-    - template: jinja
-    - source: salt://lbaas-saltmaster/profiles
-    - order: 7
+#/etc/salt/cloudconfigs/cloud_az2:
+#  file:
+#    - managed
+#    - template: jinja
+#    - source: salt://lbaas-saltmaster/cloud_config_az2
+#    - order: 7
 
-/root/.ssh/id_rsa:
-  file:
-    - managed
-    - owner: root
-    - template: jinja
-    - mode: 600
-    - source: salt://lbaas-saltmaster/id_rsa
-    - order: 7
+#/etc/salt/cloud.profiles:
+#  file:
+#    - managed
+#    - template: jinja
+#    - source: salt://lbaas-saltmaster/profiles
+#    - order: 7
 
-/root/.ssh/id_rsa.pub:
-  file:
-    - managed
-    - owner: root
-    - template: jinja
-    - mode: 600
-    - source: salt://lbaas-saltmaster/id_rsa.pub
-    - order: 7
+#/root/.ssh/id_rsa:
+#  file:
+#    - managed
+#    - owner: root
+#    - template: jinja
+#    - mode: 600
+#    - source: salt://lbaas-saltmaster/id_rsa
+#    - order: 7
 
+#/root/.ssh/id_rsa.pub:
+#  file:
+#    - managed
+#    - owner: root
+#    - template: jinja
+#    - mode: 600
+#    - source: salt://lbaas-saltmaster/id_rsa.pub
+#    - order: 7
+##
