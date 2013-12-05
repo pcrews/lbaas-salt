@@ -21,6 +21,15 @@ include:
     - source: salt://lbaas-poolmgm/libra.cfg
     - order: 0
 
+/etc/libra/logging_poolmgm.cfg:
+  file:
+    - managed
+    - mode: 755
+    - source: salt://lbaas-poolmgm/logging_poolmgm.cfg
+    - owner: libra
+    - group: libra
+    - order: 0
+
 libra_pool_mgm:
   pkg.installed:
     - pkgs:

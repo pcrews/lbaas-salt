@@ -27,6 +27,15 @@ libra_worker_packages:
     - source: salt://lbaas-haproxy-base/libra.cfg
     - order: 0
 
+/etc/libra/logging_worker.cfg:
+  file:
+    - managed
+    - mode: 755
+    - source: salt://lbaas-haproxy-base/logging_worker.cfg
+    - owner: libra
+    - group: libra
+    - order: 0
+
 /etc/sudoers:
   file:
     - managed
