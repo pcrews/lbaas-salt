@@ -83,7 +83,6 @@ install_datadog:
     - owner: root
     - group: root
 
-
 /etc/ssl/galera-client-key.pem:
   file:
     - managed

@@ -19,6 +19,7 @@
 {% if pillar['gearman_ssl'] == True %}
 # Parameters to pass to gearmand.
 PARAMS="--listen=0.0.0.0 --ssl "
+#PARAMS="--listen=0.0.0.0 --ssl --verbose=DEBUG"
 {% else %}
 PARAMS="--listen=0.0.0.0 "
 {% endif %}

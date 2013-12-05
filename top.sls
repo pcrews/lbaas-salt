@@ -5,6 +5,9 @@ stage:
     'lbaas-stage-api*':
       - lbaas-pyapi
       - common_gearman
+    'lbaas-stage-api*':
+      - lbaas-pyapi
+      - common_gearman
     'lbaas-stage*poolmgm*':
       - lbaas-poolmgm
       - common_gearman
@@ -21,6 +24,8 @@ stage:
       - lbaas-galera
     'lbaas-stage-stressor*':
       - lbaas-stressor
+    'lbaas-test-web*':
+      - lbaas-web
     'lbaas-test-web*':
       - lbaas-web
     '*stage*saltmaster*':

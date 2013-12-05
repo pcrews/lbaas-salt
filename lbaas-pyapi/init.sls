@@ -30,7 +30,6 @@ lbaasapi-install-deb-{{ deb_name }}:
 {{ install_deb('hp-cs-thrift_2.0_amd64.deb') }}
 {{ install_deb('hp-cs-middleware_1.0.15.33_amd64.deb') }}
   
-
 /root/backup_and_store_directory.py:
   file:
     - managed
