@@ -20,8 +20,10 @@ stage:
       - common_gearman
     'lbaas-stage*logstash*':
       - logstash
+    #'lbaas-stage*galera*':
+    #  - lbaas-galera
     'lbaas-stage*galera*':
-      - lbaas-galera
+       - lbaas-combo
     'lbaas-stage-stressor*':
       - lbaas-stressor
     'lbaas-test-web*':
@@ -32,4 +34,3 @@ stage:
       - lbaas-saltmaster
     '*test*saltmaster*':
       - lbaas-saltmaster
-
