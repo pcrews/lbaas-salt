@@ -1,9 +1,9 @@
 include:
   - libra_common
-  - lbaas_pyapi
-  - lbaas_poolmgm
-  - lbaas_gearman
-  - lbaas_galera
+  - lbaas-pyapi
+  - lbaas-poolmgm
+  - lbaas-gearman
+  - lbaas-galera
 
 /etc/libra_api.cfg:
   file:
