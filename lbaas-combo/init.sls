@@ -25,3 +25,12 @@ include:
     - template: jinja
     - source: salt://lbaas-combo/beaver.cfg
     - order: 999 
+
+stop_services:
+  cmd.run:
+    - name: service stop libra-api
+    - name: service stop libra-admin-api
+    - name: service stop mysql
+    - name: service stop libra-pool-mgm
+    - name: service stop gearman-job-server
+    - order: last
