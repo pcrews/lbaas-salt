@@ -55,7 +55,7 @@ api_backup_script:
 libra_api_config:
   file:
     - managed
-    - name: /etc/libra.cfg
+    - name: /etc/libra/libra.cfg
     - template: jinja
     - source: salt://lbaas-pyapi/libra.cfg
     - order: 0 

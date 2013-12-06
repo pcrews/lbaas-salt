@@ -20,7 +20,7 @@ libra_worker_packages:
       - libra-worker
     - order: 1
 
-/etc/libra.cfg:
+/etc/libra/libra.cfg:
   file:
     - managed
     - template: jinja

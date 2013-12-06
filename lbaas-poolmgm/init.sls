@@ -17,7 +17,7 @@ include:
 libra_poolmgm_config:
   file:
     - managed
-    - name: /etc/libra.cfg
+    - name: /etc/libra/libra.cfg
     - template: jinja
     - source: salt://lbaas-poolmgm/libra.cfg
     - order: 0
