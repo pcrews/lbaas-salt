@@ -14,7 +14,7 @@
 include:
   - libra_common
 
-required_packages:
+libra_gearman_packages:
   pkg.installed:
     - pkgs:
       - gearman-job-server
@@ -27,9 +27,10 @@ install_datadog:
     - name: DD_API_KEY={{ pillar['lbaas_datadog_api_key'] }} bash -c "$(wget -qO- http://dtdg.co/agent-install-ubuntu)"
     - order: 2
 
-/etc/dd-agent/datadog.conf:
+libra_gearman_datadog_config
   file:
     - managed
+    - name: /etc/dd-agent/datadog.conf
     - source: salt://lbaas-gearman/datadog.conf
     - order: 7
     
@@ -126,9 +127,10 @@ start_gearman:
     - order: last 
 
 {% if pillar['use_beaver'] == True %}
-/etc/beaver.cfg:
+libra_gearman_beaver_config:
   file:
     - managed
+    - name: /etc/beaver.cfg
     - template: jinja
     - source: salt://lbaas-gearman/beaver.cfg
     - order: 6

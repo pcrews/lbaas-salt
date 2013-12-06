@@ -45,9 +45,10 @@ install-cluster:
     - name: apt-get install -y percona-xtradb-cluster-server-5.5 percona-xtradb-cluster-client-5.5 percona-xtrabackup 
     - order: 5
 
-/root/backup_and_store_directory.py:
+libra_galera_backup_script:
   file:
     - managed
+    - name: /root/backup_and_store_directory.py
     - source: salt://scripts/backup_and_store_directory.py
 
 /etc/mysql/my.cnf:
@@ -200,9 +201,10 @@ install_datadog:
 {% endif %}
 
 {% if pillar['use_beaver'] == True %}
-/etc/beaver.cfg:
+libra_galera_beaver_config:
   file:
     - managed
+    - name: /etc/beaver.cfg
     - template: jinja
     - source: salt://lbaas-galera/beaver.cfg
 {% endif %}

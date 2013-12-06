@@ -14,9 +14,10 @@
 include:
   - libra_common
 
-/etc/libra.cfg:
+libra_poolmgm_config:
   file:
     - managed
+    - name: /etc/libra.cfg
     - template: jinja
     - source: salt://lbaas-poolmgm/libra.cfg
     - order: 0
@@ -42,9 +43,10 @@ install_datadog:
     - name: DD_API_KEY={{ pillar['lbaas_datadog_api_key'] }}  bash -c "$(wget -qO- http://dtdg.co/agent-install-ubuntu)"
     - order: 2
 
-/etc/dd-agent/datadog.conf:
+libra_poolmgm_datadog_config:
   file:
     - managed
+    - name: /etc/dd-agent/datadog.conf
     - template: jinja
     - source: salt://lbaas-poolmgm/datadog.conf
     - order: 7
@@ -69,34 +71,10 @@ install_datadog:
 {% endif %}
 
 {% if pillar['use_beaver'] == True %}
-/etc/beaver.cfg:
+libra_poolmgm_beaver_config:
   file:
     - managed
+    - name: /etc/beaver.cfg
     - template: jinja
     - source: salt://lbaas-poolmgm/beaver.cfg
 {% endif %}
-
-/etc/ssl/galera-ca-cert.pem:
-  file:
-    - managed
-    - mode: 600
-    - source: salt://debian-packages/galera-ca-cert.pem
-    - owner: root
-    - group: root
-   
-/etc/ssl/galera-client-cert.pem:
-  file:
-    - managed
-    - mode: 600
-    - source: salt://debian-packages/galera-client-cert.pem
-    - owner: root
-    - group: root
-
-/etc/ssl/galera-client-key.pem:
-  file:
-    - managed
-    - mode: 600
-    - source: salt://debian-packages/galera-client-key.pem
-    - owner: root
-    - group: root
-

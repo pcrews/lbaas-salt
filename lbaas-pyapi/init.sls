@@ -29,10 +29,11 @@ lbaasapi-install-deb-{{ deb_name }}:
 {{ install_deb('keystone_2.0.4_all.deb') }}
 {{ install_deb('hp-cs-thrift_2.0_amd64.deb') }}
 {{ install_deb('hp-cs-middleware_1.0.15.33_amd64.deb') }}
-  
-/root/backup_and_store_directory.py:
+
+api_backup_script:  
   file:
     - managed
+    - name: /root/backup_and_store_directory.py
     - source: salt://scripts/backup_and_store_directory.py
 
 /etc/libra/logging_api.cfg:
@@ -51,9 +52,10 @@ lbaasapi-install-deb-{{ deb_name }}:
     - owner: libra
     - group: libra
 
-/etc/libra.cfg:
+libra_api_config:
   file:
     - managed
+    - name: /etc/libra.cfg
     - template: jinja
     - source: salt://lbaas-pyapi/libra.cfg
     - order: 0 
@@ -90,9 +92,10 @@ lbaasapi-install-deb-{{ deb_name }}:
     - owner: libra
     - group: libra
 
-/etc/beaver.cfg:
+libra_api_beaver_config:
   file:
     - managed
+    - name: /etc/beaver.cfg
     - template: jinja
     - source: salt://lbaas-pyapi/beaver.cfg
 
@@ -133,9 +136,10 @@ install_datadog:
     - name: 'DD_API_KEY={{ pillar['lbaas_datadog_api_key'] }} bash -c "$(wget -qO- http://dtdg.co/agent-install-ubuntu)"'
     - order: 2
 
-/etc/dd-agent/datadog.conf:
+libra_api_datadog_config:
   file:
     - managed
+    - name: /etc/dd-agent/datadog.conf
     - template: jinja
     - source: salt://lbaas-pyapi/datadog.conf
     - order: 7
