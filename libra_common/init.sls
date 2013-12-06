@@ -7,7 +7,7 @@ libra_common_packages:
 
 add_ppa:
   cmd.run:
-    - name: sudo add-apt-repository {{ pillar['lbaas-ppa'] }} 
+    - name: sudo add-apt-repository {{ pillar['lbaas_ppa'] }} 
     - order: 0 
 
 
