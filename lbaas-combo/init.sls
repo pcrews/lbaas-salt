@@ -1,7 +1,7 @@
 include:
-#  - libra_common
+  - libra_common
   - lbaas-pyapi
-#  - lbaas-poolmgm
+  - lbaas-poolmgm
 #  - lbaas-gearman
 #  - lbaas-galera
 
