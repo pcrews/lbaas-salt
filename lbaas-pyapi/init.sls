@@ -60,6 +60,20 @@ libra_api_config:
     - source: salt://lbaas-pyapi/libra.cfg
     - order: 0 
 
+libra_api_defaults:
+  file:
+    - managed
+    - name: /etc/default/libra-api
+    - source: salt://lbaas-pyapi/libra-api
+    - order: last
+
+libra_admin_api_defaults:
+  file:
+    - managed
+    - name: /etc/default/libra-admin-api
+    - source: salt://lbaas-pyapi/libra-admin-api
+    - order: last
+
 {{ pillar['lbaas_api_keystone_ca_certs_path'] }}:
   file:
     - managed

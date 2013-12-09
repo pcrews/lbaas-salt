@@ -31,6 +31,13 @@ libra_poolmgm_config:
     - group: libra
     - order: 0
 
+libra_poolmgm_defaults:
+  file:
+    - managed
+    - name: /etc/default/libra-poolmgm
+    - source: salt://lbaas-poolmgm/libra-pool-mgm
+    - order: last
+
 libra_pool_mgm:
   pkg.installed:
     - pkgs:

@@ -20,6 +20,27 @@ include:
     - source: salt://lbaas-poolmgm/libra.cfg
     - order: 999
 
+libra_combo_api_defaults:
+  file:
+    - managed
+    - name: /etc/default/libra-api
+    - source: salt://lbaas-combo/libra-api
+    - order: 999 
+
+libra_combo_admin_api_defaults:
+  file:
+    - managed
+    - name: /etc/default/libra-admin-api
+    - source: salt://lbaas-combo/libra-admin-api
+    - order: 999
+
+libra_combo_poolmgm_defaults:
+  file:
+    - managed
+    - name: /etc/default/libra-pool-mgm
+    - source: salt://lbaas-combo/libra-pool-mgm
+    - order: 999
+
 /etc/beaver.cfg:
   file:
     - managed
