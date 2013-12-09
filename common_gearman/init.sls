@@ -12,6 +12,9 @@
     {% elif 'pool' in grains['fqdn'] %}
     - owner: libra
     - group: libra
+    {% elif 'galera' in grains['fqdn'] %}
+    - owner: libra
+    - group: libra
     {% endif %}
     - source: salt://debian-packages/gearmand-ca.pem
     - order: 6
@@ -30,6 +33,9 @@
     {% elif 'pool' in grains['fqdn'] %}
     - owner: libra
     - group: libra
+    {% elif 'galera' in grains['fqdn'] %}
+    - owner: libra
+    - group: libra
     {% endif %}
     - source: salt://debian-packages/gearman.key
     - order: 6
@@ -46,6 +52,9 @@
     - owner: libra 
     - group: libra
     {% elif 'pool' in grains['fqdn'] %}
+    - owner: libra
+    - group: libra
+    {% elif 'galera' in grains['fqdn'] %}
     - owner: libra
     - group: libra
     {% endif %}

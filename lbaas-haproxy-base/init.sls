@@ -40,11 +40,10 @@ stop_libra_worker:
     - group: libra
     - order: 0
 
-/etc/init/libra_worker.conf:
-  file:
-    - managed
-    - source: salt://lbaas-haproxy-base/libra_worker.conf
-    - order: 8 
+/etc/default/libra-worker:
+  - managed
+  - source: salt://lbaas-haproxy-base/libra-worker
+  - order: 999 
 
 /etc/sudoers:
   file:
