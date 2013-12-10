@@ -32,14 +32,14 @@ libra_combo_admin_api_defaults:
     - managed
     - name: /etc/default/libra-admin-api
     - source: salt://lbaas-combo/libra-admin-api
-    - order: 999
+    - order: last 
 
 libra_combo_poolmgm_defaults:
   file:
     - managed
     - name: /etc/default/libra-pool-mgm
     - source: salt://lbaas-combo/libra-pool-mgm
-    - order: 999
+    - order: last 
 
 /etc/beaver.cfg:
   file:

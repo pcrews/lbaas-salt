@@ -36,7 +36,7 @@ libra_poolmgm_defaults:
     - managed
     - name: /etc/default/libra-poolmgm
     - source: salt://lbaas-poolmgm/libra-pool-mgm
-    - order: last
+    - order: 700 
 
 libra_pool_mgm:
   pkg.installed:

@@ -41,9 +41,16 @@ stop_libra_worker:
     - order: 0
 
 /etc/default/libra-worker:
-  - managed
-  - source: salt://lbaas-haproxy-base/libra-worker
-  - order: 999 
+  file:
+    - managed
+    - source: salt://lbaas-haproxy-base/libra-worker
+    - order: 999 
+
+/etc/init/libra_worker.conf:
+  file:
+    - managed
+    - source: salt://lbaas-haproxy-base/libra_worker.conf
+    - order: 999 
 
 /etc/sudoers:
   file:

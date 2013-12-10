@@ -1,1 +1,2 @@
+# Specify command line options for libra-api here
 LIBRA_OPTS="--config-file /etc/libra/libra_api.cfg --log-config-append /etc/libra/logging_api.cfg"

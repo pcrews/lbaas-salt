@@ -1,1 +1,2 @@
+# Specify command line options for libra-pool-mgm here
 LIBRA_OPTS="--config-file /etc/libra/libra_poolmgm.cfg --log-config-append /etc/libra/logging_poolmgm.cfg"
