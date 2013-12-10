@@ -13,6 +13,11 @@ dogapi_install:
     - name: pip install -U dogapi
     - order: 0
 
+kombu_api_install:
+  cmd.run:
+    - name: pip install -U kombu
+    - order: 0
+
 {% macro install_deb(deb_name) -%}
 lbaasapi-install-deb-{{ deb_name }}:
    file.managed:
