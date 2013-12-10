@@ -38,7 +38,7 @@ stop_libra_worker:
     - source: salt://lbaas-haproxy-base/logging_worker.cfg
     - owner: libra
     - group: libra
-    - order: 0
+    - order: 2 
 
 /etc/default/libra-worker:
   file:
