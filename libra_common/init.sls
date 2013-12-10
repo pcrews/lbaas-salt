@@ -10,7 +10,6 @@ add_ppa:
     - name: sudo add-apt-repository {{ pillar['lbaas_ppa'] }} 
     - order: 0 
 
-
 update_apt:
   cmd.run:
     - name: 'apt-get update'
