@@ -46,6 +46,63 @@ apache2:
     - require:
       - pkg: apache2
 
+/var/www/earth11k.jpg:
+  file:
+    - managed
+    - source: salt://lbaas-web/earth11k.jpg
+    - require:
+      - pkg: apache2
+
+/var/www/earth15kb.jpg:
+  file:
+    - managed
+    - source: salt://lbaas-web/earth15kb.jpg
+    - require:
+      - pkg: apache2
+
+/var/www/earth1886kb.jpg:
+  file:
+    - managed
+    - source: salt://lbaas-web/earth1886kb.jpg
+    - require:
+      - pkg: apache2
+
+/var/www/earth215kb.jpg:
+  file:
+    - managed
+    - source: salt://lbaas-web/earth215kb.jpg
+    - require:
+      - pkg: apache2
+
+/var/www/earth2kb.jpg:
+  file:
+    - managed
+    - source: salt://lbaas-web/earth2kb.jpg
+    - require:
+      - pkg: apache2
+
+/var/www/earth579kb.jpg:
+  file:
+    - managed
+    - source: salt://lbaas-web/earth579kb.jpg
+    - require:
+      - pkg: apache2
+
+/var/www/earth5kb.jpg:
+  file:
+    - managed
+    - source: salt://lbaas-web/earth5kb.jpg
+    - require:
+      - pkg: apache2
+
+/var/www/earth81kb.jpg:
+  file:
+    - managed
+    - source: salt://lbaas-web/earth81kb.jpg
+    - require:
+      - pkg: apache2
+
+
 /var/www/ssl-protected:
   file.directory:
     - user: root 
